@@ -26,6 +26,7 @@ Fruit,Quantity Apple,10 Banana,12 Lychee,15 Pear,13
   "name": ["《Apple》", "《Banana》", "《Lychee》", "《Pear》"],
   "values": [10, 12, 15, 13]
 }
+```
 
 ## 🧠 Workflow Overview
 
