@@ -1,0 +1,459 @@
+app:
+  description: 接收一个Excel表格，大模型处理数据，然后生成图表
+  icon: 🤖
+  icon_background: '#FFEAD5'
+  mode: advanced-chat
+  name: Excel文件输出图表
+  use_icon_as_answer_icon: false
+dependencies:
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: langgenius/deepseek:0.0.6@dd589dc093c8084925858034ab5ec1fdf0d33819f43226c2f8c4a749a9acbbb2
+kind: app
+version: 0.3.1
+workflow:
+  conversation_variables: []
+  environment_variables: []
+  features:
+    file_upload:
+      allowed_file_extensions:
+      - .JPG
+      - .JPEG
+      - .PNG
+      - .GIF
+      - .WEBP
+      - .SVG
+      allowed_file_types:
+      - image
+      allowed_file_upload_methods:
+      - local_file
+      - remote_url
+      enabled: false
+      fileUploadConfig:
+        audio_file_size_limit: 50
+        batch_count_limit: 5
+        file_size_limit: 15
+        image_file_size_limit: 10
+        video_file_size_limit: 100
+        workflow_file_upload_limit: 10
+      image:
+        enabled: false
+        number_limits: 3
+        transfer_methods:
+        - local_file
+        - remote_url
+      number_limits: 3
+    opening_statement: ''
+    retriever_resource:
+      enabled: true
+    sensitive_word_avoidance:
+      enabled: false
+    speech_to_text:
+      enabled: false
+    suggested_questions: []
+    suggested_questions_after_answer:
+      enabled: false
+    text_to_speech:
+      enabled: false
+      language: ''
+      voice: ''
+  graph:
+    edges:
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: start
+        targetType: document-extractor
+      id: 1753859852802-source-1753860132383-target
+      source: '1753859852802'
+      sourceHandle: source
+      target: '1753860132383'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: document-extractor
+        targetType: llm
+      id: 1753860132383-source-llm-target
+      source: '1753860132383'
+      sourceHandle: source
+      target: llm
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: llm
+        targetType: parameter-extractor
+      id: llm-source-1753861075507-target
+      source: llm
+      sourceHandle: source
+      target: '1753861075507'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: parameter-extractor
+        targetType: llm
+      id: 1753861075507-source-1753861220670-target
+      source: '1753861075507'
+      sourceHandle: source
+      target: '1753861220670'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: llm
+        targetType: parameter-extractor
+      id: 1753861220670-source-1753861763919-target
+      source: '1753861220670'
+      sourceHandle: source
+      target: '1753861763919'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: parameter-extractor
+        targetType: code
+      id: 1753861763919-source-1753861893894-target
+      source: '1753861763919'
+      sourceHandle: source
+      target: '1753861893894'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: code
+        targetType: answer
+      id: 1753861893894-source-answer-target
+      source: '1753861893894'
+      sourceHandle: source
+      target: answer
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    nodes:
+    - data:
+        desc: ''
+        selected: false
+        title: 开始
+        type: start
+        variables:
+        - allowed_file_extensions: []
+          allowed_file_types:
+          - document
+          allowed_file_upload_methods:
+          - local_file
+          - remote_url
+          label: data_file
+          max_length: 48
+          options: []
+          required: true
+          type: file
+          variable: data_file
+      height: 89
+      id: '1753859852802'
+      position:
+        x: -169.8
+        y: 266
+      positionAbsolute:
+        x: -169.8
+        y: 266
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: ''
+        memory:
+          query_prompt_template: 用户输入的信息：{{#sys.query#}}
+          role_prefix:
+            assistant: ''
+            user: ''
+          window:
+            enabled: false
+            size: 10
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: deepseek-chat
+          provider: langgenius/deepseek/deepseek
+        prompt_template:
+        - id: 1c94cd11-c43c-4fd6-a33b-beaa72bcc119
+          role: system
+          text: '# 角色
+
+            你是一个数据整理的专家，擅长数据格式的整合和数据的转换
+
+
+            # 数据
+
+            {{#1753860132383.text#}}
+
+
+            #任务
+
+            先从数据中提取出满足用户要求的数据{{#sys.query#}}然后把数据转换为 csv 格式
+
+
+            #输出
+
+            把csv 格式的数据输出'
+        selected: false
+        title: LLM
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      height: 89
+      id: llm
+      position:
+        x: -197.025649492074
+        y: 623.456241497583
+      positionAbsolute:
+        x: -197.025649492074
+        y: 623.456241497583
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    - data:
+        answer: '{{#1753861893894.result#}}'
+        desc: ''
+        selected: false
+        title: 直接回复
+        type: answer
+        variables: []
+      height: 104
+      id: answer
+      position:
+        x: 148.75777142656614
+        y: 773.7718628251129
+      positionAbsolute:
+        x: 148.75777142656614
+        y: 773.7718628251129
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    - data:
+        desc: ''
+        is_array_file: false
+        selected: false
+        title: 文档提取器
+        type: document-extractor
+        variable_selector:
+        - '1753859852802'
+        - data_file
+      height: 91
+      id: '1753860132383'
+      position:
+        x: -181.1349710254999
+        y: 444.64679049357056
+      positionAbsolute:
+        x: -181.1349710254999
+        y: 444.64679049357056
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    - data:
+        desc: ''
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: deepseek-chat
+          provider: langgenius/deepseek/deepseek
+        parameters:
+        - description: 任务：提取出csv格式的字符串
+          name: csvdata
+          required: false
+          type: string
+        query:
+        - llm
+        - text
+        reasoning_mode: prompt
+        selected: false
+        title: 参数提取器
+        type: parameter-extractor
+        variables: []
+        vision:
+          enabled: false
+      height: 89
+      id: '1753861075507'
+      position:
+        x: -186.09399516592347
+        y: 782.8512236758745
+      positionAbsolute:
+        x: -186.09399516592347
+        y: 782.8512236758745
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: ''
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: deepseek-chat
+          provider: langgenius/deepseek/deepseek
+        prompt_template:
+        - id: 5584f9b9-6351-4dbb-a955-054c722a11af
+          role: system
+          text: '# 角色
+
+            你是一个csv格式数据转json数据的技术专家，擅长把csv转换为对应的json数据
+
+            # 数据
+
+            {{#1753861075507.csvdata#}}这个数据只有两列#任务
+
+            把csv中的两列数据转换对应的json数据
+
+            比如:
+
+            水果,数量,价格\n 苹果,10,50\n 香蕉,12,38\n 荔枝,15,60 \n 梨子,13,35
+
+            转换为:
+
+            "name":["《苹果》","《香蕉》","《荔枝》","《梨子》"]
+
+            "values":[10,12.15,13]
+
+            #输出
+
+            把上面转换得到的json数据输出即可'
+        selected: false
+        title: csv数据转json大模型
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      height: 89
+      id: '1753861220670'
+      position:
+        x: 160.71445522096394
+        y: 250.30455142108718
+      positionAbsolute:
+        x: 160.71445522096394
+        y: 250.30455142108718
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    - data:
+        desc: ''
+        instruction: ''
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: deepseek-chat
+          provider: langgenius/deepseek/deepseek
+        parameters:
+        - description: 任务：将返回的json数据提取出来，然后转化为字符串格式
+          name: jsondata
+          required: false
+          type: string
+        query:
+        - '1753861220670'
+        - text
+        reasoning_mode: prompt
+        selected: false
+        title: json到字符串类型参数提取
+        type: parameter-extractor
+        variables: []
+        vision:
+          enabled: false
+      height: 89
+      id: '1753861763919'
+      position:
+        x: 148.75777142656614
+        y: 427.8781695575825
+      positionAbsolute:
+        x: 148.75777142656614
+        y: 427.8781695575825
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    - data:
+        code: "import json\nimport re\n\ndef main(jsonData: str) -> dict:\n    # 解析外层JSON数据\n\
+          \    # data = json.loads(jsonData)\n    # query_str = data['query']\n  \
+          \  \n    # 去除换行符和制表符\n    clean_str = re.sub(r'[\\n\\t]', '', jsonData)\n\
+          \    \n    # 修正：去除转义的双引号（将\\\"替换为\"）\n    clean_str = re.sub(r'\\\\\"',\
+          \ '\"', clean_str)\n    \n    # 修正：提取name和values的值（修正正则表达式）\n    name_pattern\
+          \ = r'\"name\":\\s*\\[(.*?)\\]'\n    values_pattern = r'\"values\":\\s*\\\
+          [(.*?)\\]'\n    \n    name_match = re.search(name_pattern, clean_str)\n\
+          \    values_match = re.search(values_pattern, clean_str)\n    \n    names\
+          \ = []\n    if name_match:\n        # 修正：正确提取name数组内容\n        names = re.findall(r'\"\
+          ([^\"]*)\"', name_match.group(1))\n    \n    values = []\n    if values_match:\n\
+          \        # 修正：正确处理values数组\n        values = [float(num.strip()) for num\
+          \ in values_match.group(1).split(',')]\n    \n    option = {\n        \"\
+          xAxis\": {\n            \"type\": 'category',\n            \"data\": names\n\
+          \        },\n        \"yAxis\": {\n            \"type\": 'value'\n     \
+          \   },\n        \"series\": [{\n            \"data\": values,\n        \
+          \    \"type\": 'bar',\n            \"showBackground\": True,\n         \
+          \   \"backgroundStyle\": {  # 修正键名\n                \"color\": 'rgba(180,\
+          \ 180, 180, 0.2)' \n            }\n        }]  # 修正：补齐方括号\n    }\n    \n\
+          \    # 生成输出文件\n    output = f\"```echarts\\n{json.dumps(option, ensure_ascii=False)}\\\
+          n```\"\n    return {\n        \"result\": output,\n    }"
+        code_language: python3
+        desc: ''
+        outputs:
+          result:
+            children: null
+            type: string
+        selected: false
+        title: 代码执行
+        type: code
+        variables:
+        - value_selector:
+          - '1753861763919'
+          - jsondata
+          value_type: string
+          variable: jsonData
+      height: 53
+      id: '1753861893894'
+      position:
+        x: 172.60730788743786
+        y: 594.8529364739272
+      positionAbsolute:
+        x: 172.60730788743786
+        y: 594.8529364739272
+      selected: true
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    viewport:
+      x: 486.39135803779
+      y: -145.13002335947334
+      zoom: 0.9298044082947682
