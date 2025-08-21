@@ -32,9 +32,8 @@ Fruit,Quantity Apple,10 Banana,12 Lychee,15 Pear,13
 
 ```mermaid
 graph TD
-    A[📥 CSV Upload] --> B[🧠 Parameter Extractor]
-    B --> C[🧾 LLM Parsing]
-    C --> D[📦 JSON Formatter]
-    D --> E[📊 Chart Generator]
-
-<img width="1050" height="718" alt="image" src="https://github.com/user-attachments/assets/10063c0c-b37b-4106-9d3d-11f7438de778" />
+    A[CSV Upload] --> B[Parameter Extractor]
+    B --> C[LLM Parsing]
+    C --> D[JSON Formatter]
+    D --> E[Chart Generator]
+```
